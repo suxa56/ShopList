@@ -4,17 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
 import com.example.shoppinglist.domain.ShopItem
 
 class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>() {
 
-    var shopList = listOf<ShopItem>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+    var shopList = emptyList<ShopItem>()
 
     class ShopItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val cardTitle = view.findViewById<TextView>(R.id.card_title)
@@ -33,6 +30,13 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
 //        holder.itemView.setOnLongClickListener{
 //            true
 //        }
+    }
+
+    fun setData(newShopList: List<ShopItem>) {
+        val shopListDiffUtil = ShopListDiffUtil(shopList, newShopList)
+        val shopListResult = DiffUtil.calculateDiff(shopListDiffUtil)
+        this.shopList = newShopList
+        shopListResult.dispatchUpdatesTo(this)
     }
 
     override fun getItemCount(): Int {

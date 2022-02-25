@@ -9,9 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
 import com.example.shoppinglist.domain.ShopItem
 
-class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>() {
+class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>() {
 
     var shopList = emptyList<ShopItem>()
+
+    var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
+    var onShopItemClickListener: ((ShopItem) -> Unit)? = null
 
     class ShopItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val cardTitle = view.findViewById<TextView>(R.id.card_title)
@@ -19,7 +22,12 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.shop_item_enabled, parent, false)
+        val layout = when (viewType) {
+            VIEW_TYPE_ENABLED -> R.layout.shop_item_enabled
+            VIEW_TYPE_DISABLED -> R.layout.shop_item_disabled
+            else -> throw RuntimeException("Unknown view type: $viewType")
+        }
+        val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         return ShopItemViewHolder(view)
     }
 
@@ -27,9 +35,28 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
         val shopItem = shopList[position]
         holder.cardTitle.text = shopItem.name
         holder.cardCount.text = shopItem.count.toString()
-//        holder.itemView.setOnLongClickListener{
-//            true
-//        }
+        holder.itemView.setOnLongClickListener{
+            onShopItemLongClickListener?.invoke(shopItem)
+            true
+        }
+        holder.itemView.setOnClickListener{
+            onShopItemClickListener?.invoke(shopItem)
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        if (shopList[position].enabled) {
+            return VIEW_TYPE_ENABLED
+        } else {
+            return VIEW_TYPE_DISABLED
+        }
+    }
+
+    override fun onViewRecycled(holder: ShopItemViewHolder) {
+        super.onViewRecycled(holder)
+        holder.cardTitle.text = ""
+        holder.cardCount.text = ""
+
     }
 
     fun setData(newShopList: List<ShopItem>) {
@@ -41,5 +68,12 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
 
     override fun getItemCount(): Int {
         return shopList.size
+    }
+
+    companion object {
+        const val VIEW_TYPE_DISABLED = 0
+        const val VIEW_TYPE_ENABLED = 1
+
+        const val MAX_POOL_SIZE = 30
     }
 }

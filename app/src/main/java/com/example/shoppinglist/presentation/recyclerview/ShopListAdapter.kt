@@ -12,16 +12,24 @@ import com.example.shoppinglist.domain.ShopItem
 class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>() {
 
     var shopList = emptyList<ShopItem>()
+        set(value) {
+            val shopListDiffUtil = ShopListDiffUtil(shopList, value)
+            val shopListResult = DiffUtil.calculateDiff(shopListDiffUtil)
+            shopListResult.dispatchUpdatesTo(this)
+            field = value
+        }
 
+    // Click listeners with lambda
     var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
     var onShopItemClickListener: ((ShopItem) -> Unit)? = null
 
     class ShopItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val cardTitle = view.findViewById<TextView>(R.id.card_title)
-        val cardCount = view.findViewById<TextView>(R.id.card_count)
+        val cardTitle: TextView = view.findViewById(R.id.card_title)
+        val cardCount: TextView = view.findViewById(R.id.card_count)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
+        // Setting layout depends on "enable"
         val layout = when (viewType) {
             VIEW_TYPE_ENABLED -> R.layout.shop_item_enabled
             VIEW_TYPE_DISABLED -> R.layout.shop_item_disabled
@@ -45,10 +53,10 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (shopList[position].enabled) {
-            return VIEW_TYPE_ENABLED
+        return if (shopList[position].enabled) {
+            VIEW_TYPE_ENABLED
         } else {
-            return VIEW_TYPE_DISABLED
+            VIEW_TYPE_DISABLED
         }
     }
 
@@ -57,13 +65,6 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
         holder.cardTitle.text = ""
         holder.cardCount.text = ""
 
-    }
-
-    fun setData(newShopList: List<ShopItem>) {
-        val shopListDiffUtil = ShopListDiffUtil(shopList, newShopList)
-        val shopListResult = DiffUtil.calculateDiff(shopListDiffUtil)
-        this.shopList = newShopList
-        shopListResult.dispatchUpdatesTo(this)
     }
 
     override fun getItemCount(): Int {

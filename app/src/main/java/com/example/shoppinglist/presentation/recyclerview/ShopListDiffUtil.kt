@@ -16,13 +16,10 @@ class ShopListDiffUtil(
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition] === newList[newItemPosition]
+        return oldList[oldItemPosition].id == newList[newItemPosition].id
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].id == newList[newItemPosition].id
-                && oldList[oldItemPosition].name == newList[newItemPosition].name
-                && oldList[oldItemPosition].count == newList[newItemPosition].count
-                && oldList[oldItemPosition].enabled == newList[newItemPosition].enabled
+        return oldList[oldItemPosition] == newList[newItemPosition]
     }
 }

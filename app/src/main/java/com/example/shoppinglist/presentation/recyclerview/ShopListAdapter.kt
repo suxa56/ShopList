@@ -1,32 +1,17 @@
 package com.example.shoppinglist.presentation.recyclerview
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 import com.example.shoppinglist.R
 import com.example.shoppinglist.domain.ShopItem
 
-class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>() {
-
-    var shopList = emptyList<ShopItem>()
-        set(value) {
-            val shopListDiffUtil = ShopListDiffUtil(shopList, value)
-            val shopListResult = DiffUtil.calculateDiff(shopListDiffUtil)
-            shopListResult.dispatchUpdatesTo(this)
-            field = value
-        }
+class ShopListAdapter :
+    ListAdapter<ShopItem, ShopItemViewHolder>(ShopItemDiffUtil()) {
 
     // Click listeners with lambda
     var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
     var onShopItemClickListener: ((ShopItem) -> Unit)? = null
-
-    class ShopItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val cardTitle: TextView = view.findViewById(R.id.card_title)
-        val cardCount: TextView = view.findViewById(R.id.card_count)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
         // Setting layout depends on "enable"
@@ -40,35 +25,24 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
     }
 
     override fun onBindViewHolder(holder: ShopItemViewHolder, position: Int) {
-        val shopItem = shopList[position]
+        val shopItem = getItem(position)
         holder.cardTitle.text = shopItem.name
         holder.cardCount.text = shopItem.count.toString()
-        holder.itemView.setOnLongClickListener{
+        holder.itemView.setOnLongClickListener {
             onShopItemLongClickListener?.invoke(shopItem)
             true
         }
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
             onShopItemClickListener?.invoke(shopItem)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (shopList[position].enabled) {
+        return if (getItem(position).enabled) {
             VIEW_TYPE_ENABLED
         } else {
             VIEW_TYPE_DISABLED
         }
-    }
-
-    override fun onViewRecycled(holder: ShopItemViewHolder) {
-        super.onViewRecycled(holder)
-        holder.cardTitle.text = ""
-        holder.cardCount.text = ""
-
-    }
-
-    override fun getItemCount(): Int {
-        return shopList.size
     }
 
     companion object {

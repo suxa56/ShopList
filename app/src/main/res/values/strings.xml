@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">ShoppingList</string>
     <string name="somsa">Сомса</string>
+    <string name="save">Save</string>
+    <string name="til_name">Name:</string>
+    <string name="til_count">Count:</string>
 </resources>

@@ -8,16 +8,20 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
+import com.example.shoppinglist.databinding.ActivityMainBinding
 import com.example.shoppinglist.presentation.recyclerview.ShopListAdapter
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var shopListAdapter: ShopListAdapter
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
         setupRecyclerView()
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.shopList.observe(this) {
@@ -26,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        val rvShopList = findViewById<RecyclerView>(R.id.rv_shop_list)
+        val rvShopList = binding.rvShopList
         with(rvShopList) {
             shopListAdapter = ShopListAdapter()
             adapter = shopListAdapter

@@ -44,7 +44,7 @@ class ShopItemViewModel : ViewModel() {
         _shopItem.value = getShopItemUseCase.getShopItem(shopItemId)
     }
 
-    fun addShopItem(inputName: String?, inputCount: Int?) {
+    fun addShopItem(inputName: String?, inputCount: String?) {
         val name = parseName(inputName)
         val count = parseCount(inputCount)
         val fieldsValid = validateInput(name, count)
@@ -55,7 +55,7 @@ class ShopItemViewModel : ViewModel() {
         }
     }
 
-    fun editShopItem(inputName: String?, inputCount: Int?) {
+    fun editShopItem(inputName: String?, inputCount: String?) {
         val name = parseName(inputName)
         val count = parseCount(inputCount)
         val fieldsValid = validateInput(name, count)
@@ -72,11 +72,11 @@ class ShopItemViewModel : ViewModel() {
         return inputName?.trim() ?: ""
     }
 
-    private fun parseCount(inputCount: Int?): Int {
-        return if (inputCount == null || inputCount < 0) {
+    private fun parseCount(inputCount: String?): Int {
+        return try {
+            inputCount?.trim()?.toInt() ?: 0
+        } catch (e: Exception) {
             0
-        } else {
-            inputCount
         }
     }
 

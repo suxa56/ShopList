@@ -32,10 +32,10 @@ class ShopItemViewModel : ViewModel() {
             return _shopItem
         }
 
-    private val _actionFinished = MutableLiveData<Unit>()
-    val actionFinished: LiveData<Unit>
+    private val _shouldCloseScreen = MutableLiveData<Unit>()
+    val shouldCloseScreen: LiveData<Unit>
         get() {
-            return _actionFinished
+            return _shouldCloseScreen
         }
 
 
@@ -102,7 +102,7 @@ class ShopItemViewModel : ViewModel() {
     }
 
     private fun finishWork() {
-        _actionFinished.value = Unit
+        _shouldCloseScreen.value = Unit
     }
 
 }

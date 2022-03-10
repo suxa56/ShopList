@@ -1,6 +1,7 @@
 package com.example.shoppinglist.presentation
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
@@ -12,7 +13,7 @@ import com.example.shoppinglist.R
 import com.example.shoppinglist.databinding.ActivityMainBinding
 import com.example.shoppinglist.presentation.recyclerview.ShopListAdapter
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var shopListAdapter: ShopListAdapter
@@ -115,5 +116,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun isOnePaneMode(): Boolean {
         return shopItemContainer == null
+    }
+
+    override fun onEditingFinished() {
+        supportFragmentManager.popBackStack()
     }
 }

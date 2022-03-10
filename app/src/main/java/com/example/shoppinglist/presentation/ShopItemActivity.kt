@@ -8,7 +8,7 @@ import com.example.shoppinglist.R
 import com.example.shoppinglist.databinding.ActivityShopItemBinding
 import com.example.shoppinglist.domain.ShopItem
 
-class ShopItemActivity : AppCompatActivity() {
+class ShopItemActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
 
     private lateinit var binding: ActivityShopItemBinding
     private var screenMode = MODE_UNKNOWN
@@ -43,7 +43,6 @@ class ShopItemActivity : AppCompatActivity() {
         }
     }
 
-    //
     private fun launchRightMode() {
         val fragment = when (screenMode) {
             MODE_ADD -> ShopItemFragment.newInstanceAddItem()
@@ -53,6 +52,10 @@ class ShopItemActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.shop_item_container, fragment)
             .commit()
+    }
+
+    override fun onEditingFinished() {
+        finish()
     }
 
     companion object {

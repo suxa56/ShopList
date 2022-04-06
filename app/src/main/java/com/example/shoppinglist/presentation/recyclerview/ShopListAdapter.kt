@@ -2,8 +2,12 @@ package com.example.shoppinglist.presentation.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.ListAdapter
 import com.example.shoppinglist.R
+import com.example.shoppinglist.databinding.ShopItemDisabledBinding
+import com.example.shoppinglist.databinding.ShopItemEnabledBinding
 import com.example.shoppinglist.domain.ShopItem
 
 class ShopListAdapter :
@@ -20,20 +24,34 @@ class ShopListAdapter :
             VIEW_TYPE_DISABLED -> R.layout.shop_item_disabled
             else -> throw RuntimeException("Unknown view type: $viewType")
         }
-        val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
-        return ShopItemViewHolder(view)
+        val binding = DataBindingUtil.inflate<ViewDataBinding>(
+            LayoutInflater.from(parent.context),
+            layout,
+            parent,
+            false
+        )
+        return ShopItemViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ShopItemViewHolder, position: Int) {
         val shopItem = getItem(position)
-        holder.cardTitle.text = shopItem.name
-        holder.cardCount.text = shopItem.count.toString()
-        holder.itemView.setOnLongClickListener {
+        val binding = holder.binding
+        binding.root.setOnLongClickListener {
             onShopItemLongClickListener?.invoke(shopItem)
             true
         }
         holder.itemView.setOnClickListener {
             onShopItemClickListener?.invoke(shopItem)
+        }
+        when (binding) {
+            is ShopItemDisabledBinding -> {
+                binding.cardTitle.text = shopItem.name
+                binding.cardCount.text = shopItem.count.toString()
+            }
+            is ShopItemEnabledBinding -> {
+                binding.cardTitle.text = shopItem.name
+                binding.cardCount.text = shopItem.count.toString()
+            }
         }
     }
 

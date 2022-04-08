@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textCapSentences"
                 android:hint="@string/til_name"
+                app:onNameChanged="@{viewModel}"
                 app:etName="@{viewModel.shopItem}"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -51,6 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
+                app:onCountChanged="@{viewModel}"
                 app:etCount="@{viewModel.shopItem}"
                 android:hint="@string/til_count" />
         </com.google.android.material.textfield.TextInputLayout>

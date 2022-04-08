@@ -4,11 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.ListAdapter
 import com.example.shoppinglist.R
 import com.example.shoppinglist.databinding.ShopItemDisabledBinding
 import com.example.shoppinglist.databinding.ShopItemEnabledBinding
 import com.example.shoppinglist.domain.ShopItem
+import com.example.shoppinglist.presentation.MainViewModel
 
 class ShopListAdapter :
     ListAdapter<ShopItem, ShopItemViewHolder>(ShopItemDiffUtil()) {

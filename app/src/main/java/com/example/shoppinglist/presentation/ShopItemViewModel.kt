@@ -38,8 +38,6 @@ class ShopItemViewModel : ViewModel() {
             return _shouldCloseScreen
         }
 
-
-
     fun getShopItem(shopItemId: Int) {
         _shopItem.value = getShopItemUseCase.getShopItem(shopItemId)
     }

@@ -40,20 +40,3 @@ fun bindingOnNameChanged(
 ) {
     textInputEditText.doOnTextChanged { _, _, _, _ -> viewModel.resetErrorInputName() }
 }
-
-//@BindingAdapter("errorInputCount")
-//fun bindingErrorInputCount(
-//    textInputLayout: TextInputLayout,
-//    errorInputCount: LiveData<Boolean>
-//) {
-//    errorInputCount.value?.let {
-//        val message = if (it) {
-//            textInputLayout.context.getString(R.string.error_input_count)
-//        } else {
-//            null
-//        }
-//        textInputLayout.error = message
-//        textInputLayout.isErrorEnabled = it
-//        textInputLayout.errorContentDescription = message
-//    }
-//}

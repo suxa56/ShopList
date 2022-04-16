@@ -1,16 +1,15 @@
 package com.example.shoppinglist.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.shoppinglist.R
 import com.example.shoppinglist.databinding.FragmentMainBinding
 import com.example.shoppinglist.presentation.recyclerview.ShopListAdapter
 
@@ -86,13 +85,6 @@ class MainFragment : Fragment() {
                 MainFragmentDirections
                     .actionMainFragmentToShopItemFragment(it)
             )
-//            if (isOnePaneMode()) {
-//                val intent = ShopItemActivity.newIntentEditItem(this, it.id)
-//                startActivity(intent)
-//            } else {
-//                val fragment = ShopItemFragment.newInstanceEditItem(it.id)
-//                launchFragment(fragment)
-//            }
         }
     }
 
@@ -126,8 +118,4 @@ class MainFragment : Fragment() {
             )
         }
     }
-
-//    interface IsOnePanelMode {
-//        fun isOnePanel()
-//    }
 }
